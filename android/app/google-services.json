@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "991793219404",
+    "project_id": "certiva-11244",
+    "storage_bucket": "certiva-11244.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991793219404:android:de11f09e5ba554eb3d31e9",
+        "android_client_info": {
+          "package_name": "com.kove.certiva"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991793219404-rlg56fkomkstgo6mi5spl55pebrnrvfr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kove.certiva",
+            "certificate_hash": "626d3035761889f77fa08500111772f18d7fed54"
+          }
+        },
+        {
+          "client_id": "991793219404-efnr1ru33gj0tcpb8qtbar3m4nsaf024.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZqFeyZ9fjl3ibqjv7jQDp4i94_7v1kgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991793219404-efnr1ru33gj0tcpb8qtbar3m4nsaf024.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

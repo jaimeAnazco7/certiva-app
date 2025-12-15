@@ -1,0 +1,45 @@
+abtiguas
+
+en el campo número de C.I., se agrego la validación para q solo permita valores numericos
+se implementó la pantalla con despliegue de cards de todos los Médicos seleccionados por Especialidad y fecha Crear Botón y Agendar Turno
+se implementó la pantalla con despliegue de cards de todos los Médicos seleccionados por Especialidad y fecha Crear Botón y Agendar Turno
+se implementó la pantalla con despliegue de cards de todos los Médicos seleccionados por Especialidad y fecha Crear Botón y Agendar Turno
+se implementó la pantalla con despliegue de cards de todos los Médicos seleccionados por Especialidad y fecha Crear Botón y Agendar Turno
+se implementó pantalla para mostrar nombre de médico , especialidad , sucursal y fecha se crearon los botones para seleccionar las horas
+los campos prestador y especialidad ahora son obligatorios
+ahora el campo fecha es obligatorio
+se implementó pantalla para mostrar nombre de médico , especialidad , sucursal y fecha se crearon los botones para seleccionar las horas
+se realizó el análisis previo al plan
+se implementó el an , pero tengo problemas al compartir a los testers , se está coordinando con el equipo
+se adecuó la pantalla de inicio de una forma más fiel al diseño propuesto por la diseñadora
+Se adecuó la interfaz según lo solicitado
+se adecuó e diseño de acuerdo a lo solicitado
+verificación de la operatividad en POSTMAN
+
+
+
+nuevas
+
+Configuración inicial del proyecto Flutter, Application ID único para Google Play Store, actualización de archivos Android (build.gradle.kts, AndroidManifest.xml), configuración de firma digital para release
+Generación de APK/AAB firmado, configuración de Google Play Console, subida a Testing Interno, resolución de errores de compilación
+Eliminación del botón de Facebook en login, ajuste de alineación del texto 'Olvidaste tu contraseña', mejoras en pantalla de bienvenida (logo, texto, imagen bienvenidos.png)
+Estandarización de logos en todas las pantallas (Mis datos, Mis resultados, Agendar análisis, Mi agenda), comentado de botones 'Consultar Local' y 'Consultar API'
+Corrección del bug donde seleccionar médico borraba la especialidad, implementación de funcionalidad correcta de filtros y cards, navegación mejorada entre pantallas
+Configuración de iconos de la aplicación para Android, actualización de AndroidManifest.xml, configuración de splash screen con logo de Certiva
+Resolución de problemas con iconos por defecto de Android, configuración de splash screen con fondo blanco y logo de Certiva, uso de redondo.png para iconos
+Implementación del endpoint GET /app/get_sucursales, actualización de pantallas Quiero Consultar y Mi Agenda para usar API de sucursales
+Implementación del endpoint GET /app/get_especialidad, actualización de pantalla Quiero Consultar para usar API de especialidades
+Implementación del endpoint GET /app/get_prestadores/:ID_ESPECIALIDAD, carga de TODOS los médicos al iniciar, filtrado por especialidad
+Eliminación de médicos duplicados en getAllDoctors() agrupando por cod_prestador, actualización de filtrado para soportar múltiples especialidades por médico
+Mostrar todas las especialidades del médico en el dropdown, implementación de lógica para agrupar especialidades por médico
+Implementación del endpoint GET /app/get_turnos_disponibles, creación del método _aplicarFiltros() para aplicar filtros incrementales
+Creación del método _agruparTurnosPorMedicoYFecha() para agrupar turnos, actualización de dropdowns para llamar a _aplicarFiltros() al seleccionar
+Creación del método _buildTurnoCard() para mostrar cards de turnos disponibles, actualización de _DoctorScheduleScreen para aceptar turnos pre-cargados
+Actualización de _DoctorScheduleScreen para mostrar horarios y guardar id_det_aux, integración completa del flujo de consulta
+Pruebas en Postman de endpoints de turnos disponibles, resolución de problemas con parámetros de API (error 555), configuración correcta de Path Variables
+Documentación del proceso de testing interno, configuración de testers internos, validación del esquema implementado
+Optimización del sistema de filtros incrementales, mejora en la performance de consultas API, implementación de cache para datos frecuentemente consultados
+Implementación de validaciones en formularios de consulta, manejo de errores de API, mejoras en la experiencia de usuario durante la selección de turnos
+Testing final de todas las funcionalidades implementadas, verificación de flujo completo desde login hasta agendamiento de consultas
+Documentación final del proyecto, actualización de README, preparación de manual de usuario para testers internos
+Preparación final para release en Google Play Store, configuración de testers internos, validación de certificados de firma
