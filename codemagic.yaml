@@ -9,10 +9,12 @@ workflows:
       cocoapods: default
       groups:
         - app_store_credentials
+      integrations:
+        app_store_connect: app_store_credentials
       vars:
         # ⚠️ IMPORTANTE: Cambia estos valores por los de tu app
         APP_ID: "py.com.certiva.app"  # ✅ Configurado
-        APP_STORE_ID: ""  # ⚠️ OPCIONAL: ID de tu app en App Store Connect (si ya existe)
+        # APP_STORE_ID: ""  # ⚠️ OPCIONAL: ID de tu app en App Store Connect (descomenta si lo tienes)
         XCODE_WORKSPACE: "ios/Runner.xcworkspace"
         XCODE_SCHEME: "Runner"
         BUNDLE_ID: "py.com.certiva.app"  # ✅ Configurado - Debe coincidir con APP_ID
