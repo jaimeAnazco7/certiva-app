@@ -3,14 +3,14 @@ workflows:
     name: Certiva App iOS
     max_build_duration: 120
     instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: app_store_credentials
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
       groups:
         - app_store_credentials
-      integrations:
-        app_store_connect: app_store_credentials
       vars:
         # ⚠️ IMPORTANTE: Cambia estos valores por los de tu app
         APP_ID: "py.com.certiva.app"  # ✅ Configurado
