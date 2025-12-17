@@ -121,6 +121,7 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/icons/redondo.png"
+  remove_alpha_ios: true  # Quita la transparencia del icono para iOS (requerido para App Store)
   min_sdk_android: 21
   web:
     generate: true

@@ -71,3 +71,4 @@ echo "3. Selecciona tu archivo y haz clic en 'Distribute App'"
 echo "4. O consulta GUIA_TESTFLIGHT.md para más opciones"
 echo ""
 
+

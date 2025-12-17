@@ -114,3 +114,4 @@ Para verificar que el Bundle ID está creado:
 
 **Una vez creado el Bundle ID, vuelve a App Store Connect y selecciónalo en el formulario.** 🎉
 
+
