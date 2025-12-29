@@ -3,21 +3,74 @@ import 'screens/welcome_screen.dart';
 import 'services/user_service.dart';
 
 void main() async {
+  final startTime = DateTime.now();
+  print('🚀 [MAIN] Inicio de la aplicación - ${startTime.toIso8601String()}');
+  
+  print('🔧 [MAIN] Llamando WidgetsFlutterBinding.ensureInitialized()...');
   WidgetsFlutterBinding.ensureInitialized();
+  print('✅ [MAIN] WidgetsFlutterBinding.ensureInitialized() completado');
   
-  // Esperar un momento para que los plugins nativos estén completamente listos
+  // Inicializar la app primero, luego Hive en segundo plano
   // Esto previene el crash en path_provider_foundation
-  await Future.delayed(const Duration(milliseconds: 100));
-  
-  try {
-    await UserService.init();
-  } catch (e) {
-    print('Error inicializando UserService: $e');
-    // Continuar de todas formas, la app puede funcionar sin Hive inicializado
-    // Los servicios que usen Hive manejarán el error internamente
-  }
-  
+  print('📱 [MAIN] Llamando runApp()...');
   runApp(const MyApp());
+  print('✅ [MAIN] runApp() completado - App iniciada');
+  
+  // Inicializar Hive después de que la app esté corriendo
+  // Usar un delay más largo para asegurar que los plugins nativos estén listos
+  print('🔄 [MAIN] Iniciando inicialización de Hive en segundo plano...');
+  _initializeHiveInBackground();
+  print('✅ [MAIN] Función _initializeHiveInBackground() llamada (no esperada)');
+}
+
+Future<void> _initializeHiveInBackground() async {
+  final initStartTime = DateTime.now();
+  print('⏳ [HIVE_BG] Iniciando inicialización diferida de Hive - ${initStartTime.toIso8601String()}');
+  
+  // Esperar a que la app esté completamente inicializada
+  print('⏳ [HIVE_BG] Esperando 1000ms para que los plugins nativos estén listos...');
+  await Future.delayed(const Duration(milliseconds: 1000));
+  final afterDelay = DateTime.now();
+  final delayDuration = afterDelay.difference(initStartTime);
+  print('✅ [HIVE_BG] Delay completado después de ${delayDuration.inMilliseconds}ms');
+  
+  print('🔄 [HIVE_BG] Intentando inicializar UserService (primer intento)...');
+  try {
+    final beforeInit = DateTime.now();
+    await UserService.init();
+    final afterInit = DateTime.now();
+    final initDuration = afterInit.difference(beforeInit);
+    print('✅ [HIVE_BG] Hive inicializado correctamente en ${initDuration.inMilliseconds}ms');
+    print('✅ [HIVE_BG] Total tiempo desde inicio: ${afterInit.difference(initStartTime).inMilliseconds}ms');
+  } catch (e, stackTrace) {
+    final errorTime = DateTime.now();
+    print('❌ [HIVE_BG] Error inicializando UserService (primer intento) - ${errorTime.toIso8601String()}');
+    print('❌ [HIVE_BG] Error: $e');
+    print('❌ [HIVE_BG] Stack trace: $stackTrace');
+    
+    // Reintentar después de otro delay
+    print('⏳ [HIVE_BG] Esperando 2000ms antes del segundo intento...');
+    await Future.delayed(const Duration(milliseconds: 2000));
+    final afterSecondDelay = DateTime.now();
+    print('✅ [HIVE_BG] Segundo delay completado después de ${afterSecondDelay.difference(errorTime).inMilliseconds}ms');
+    
+    print('🔄 [HIVE_BG] Intentando inicializar UserService (segundo intento)...');
+    try {
+      final beforeSecondInit = DateTime.now();
+      await UserService.init();
+      final afterSecondInit = DateTime.now();
+      final secondInitDuration = afterSecondInit.difference(beforeSecondInit);
+      print('✅ [HIVE_BG] Hive inicializado en segundo intento en ${secondInitDuration.inMilliseconds}ms');
+      print('✅ [HIVE_BG] Total tiempo desde inicio: ${afterSecondInit.difference(initStartTime).inMilliseconds}ms');
+    } catch (e2, stackTrace2) {
+      final finalErrorTime = DateTime.now();
+      print('❌ [HIVE_BG] Error en segundo intento de inicialización - ${finalErrorTime.toIso8601String()}');
+      print('❌ [HIVE_BG] Error: $e2');
+      print('❌ [HIVE_BG] Stack trace: $stackTrace2');
+      print('⚠️ [HIVE_BG] La app continuará sin Hive inicializado');
+      // La app puede continuar sin Hive, los servicios manejarán el error
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {

@@ -8,24 +8,84 @@ class UserService {
   static const String _loginCredentialsKey = 'loginCredentials';
 
   static Future<void> init() async {
+    final startTime = DateTime.now();
+    print('📦 [UserService] Iniciando inicialización de Hive - ${startTime.toIso8601String()}');
+    
     try {
+      print('📦 [UserService] Paso 1/5: Llamando Hive.initFlutter()...');
+      final beforeInitFlutter = DateTime.now();
       await Hive.initFlutter();
+      final afterInitFlutter = DateTime.now();
+      final initFlutterDuration = afterInitFlutter.difference(beforeInitFlutter);
+      print('✅ [UserService] Hive.initFlutter() completado en ${initFlutterDuration.inMilliseconds}ms');
+      
+      print('📦 [UserService] Paso 2/5: Registrando UserAdapter...');
+      final beforeAdapter = DateTime.now();
       Hive.registerAdapter(UserAdapter());
+      final afterAdapter = DateTime.now();
+      final adapterDuration = afterAdapter.difference(beforeAdapter);
+      print('✅ [UserService] UserAdapter registrado en ${adapterDuration.inMilliseconds}ms');
+      
+      print('📦 [UserService] Paso 3/5: Abriendo box de usuarios...');
+      final beforeUsersBox = DateTime.now();
       await Hive.openBox<User>(_boxName);
+      final afterUsersBox = DateTime.now();
+      final usersBoxDuration = afterUsersBox.difference(beforeUsersBox);
+      print('✅ [UserService] Box de usuarios abierto en ${usersBoxDuration.inMilliseconds}ms');
+      
+      print('📦 [UserService] Paso 4/5: Abriendo box de usuario actual...');
+      final beforeCurrentUserBox = DateTime.now();
       await Hive.openBox(_currentUserKey);
+      final afterCurrentUserBox = DateTime.now();
+      final currentUserBoxDuration = afterCurrentUserBox.difference(beforeCurrentUserBox);
+      print('✅ [UserService] Box de usuario actual abierto en ${currentUserBoxDuration.inMilliseconds}ms');
+      
+      print('📦 [UserService] Paso 5/5: Abriendo box de credenciales...');
+      final beforeCredentialsBox = DateTime.now();
       await Hive.openBox(_loginCredentialsKey);
-    } catch (e) {
-      print('Error inicializando Hive en UserService: $e');
+      final afterCredentialsBox = DateTime.now();
+      final credentialsBoxDuration = afterCredentialsBox.difference(beforeCredentialsBox);
+      print('✅ [UserService] Box de credenciales abierto en ${credentialsBoxDuration.inMilliseconds}ms');
+      
+      final endTime = DateTime.now();
+      final totalDuration = endTime.difference(startTime);
+      print('✅ [UserService] Inicialización de Hive completada exitosamente en ${totalDuration.inMilliseconds}ms');
+    } catch (e, stackTrace) {
+      final errorTime = DateTime.now();
+      final errorDuration = errorTime.difference(startTime);
+      print('❌ [UserService] Error inicializando Hive después de ${errorDuration.inMilliseconds}ms');
+      print('❌ [UserService] Error: $e');
+      print('❌ [UserService] Stack trace: $stackTrace');
+      
       // Reintentar después de un delay más largo
+      print('⏳ [UserService] Esperando 500ms antes del segundo intento...');
       await Future.delayed(const Duration(milliseconds: 500));
+      
+      print('🔄 [UserService] Segundo intento de inicialización...');
       try {
+        final secondStartTime = DateTime.now();
+        print('📦 [UserService] Segundo intento - Llamando Hive.initFlutter()...');
         await Hive.initFlutter();
+        print('✅ [UserService] Segundo intento - Hive.initFlutter() completado');
+        
+        print('📦 [UserService] Segundo intento - Registrando UserAdapter...');
         Hive.registerAdapter(UserAdapter());
+        print('✅ [UserService] Segundo intento - UserAdapter registrado');
+        
+        print('📦 [UserService] Segundo intento - Abriendo boxes...');
         await Hive.openBox<User>(_boxName);
         await Hive.openBox(_currentUserKey);
         await Hive.openBox(_loginCredentialsKey);
-      } catch (e2) {
-        print('Error en segundo intento de inicialización de Hive: $e2');
+        
+        final secondEndTime = DateTime.now();
+        final secondDuration = secondEndTime.difference(secondStartTime);
+        print('✅ [UserService] Segundo intento exitoso en ${secondDuration.inMilliseconds}ms');
+      } catch (e2, stackTrace2) {
+        final finalErrorTime = DateTime.now();
+        final finalDuration = finalErrorTime.difference(startTime);
+        print('❌ [UserService] Error en segundo intento después de ${finalDuration.inMilliseconds}ms total');
+        print('❌ [UserService] Error: $e2');
+        print('❌ [UserService] Stack trace: $stackTrace2');
         // Lanzar el error para que la app sepa que Hive no está disponible
         rethrow;
       }
