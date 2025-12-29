@@ -54,3 +54,5 @@ El archivo `codemagic.yaml` ya está configurado con:
 **¿Quieres que te guíe paso a paso para configurar Codemagic ahora?** 🚀
 
 
+
+

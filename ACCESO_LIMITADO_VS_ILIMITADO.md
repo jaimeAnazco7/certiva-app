@@ -152,3 +152,5 @@ Si eliges "Acceso Ilimitado", Apple revisará:
 **¿Tienes más de 100 personas en tu equipo que necesitan probar la app?** Si la respuesta es no, "Acceso Limitado" es perfecto para ti. 🚀
 
 
+
+

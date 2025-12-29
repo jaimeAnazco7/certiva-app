@@ -133,3 +133,5 @@ Para verificar si un PNG tiene transparencia:
 
 **¿Necesitas ayuda para quitar la transparencia del icono?** 🎨
 
+
+

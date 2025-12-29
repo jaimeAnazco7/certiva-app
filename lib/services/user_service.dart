@@ -8,11 +8,28 @@ class UserService {
   static const String _loginCredentialsKey = 'loginCredentials';
 
   static Future<void> init() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter(UserAdapter());
-    await Hive.openBox<User>(_boxName);
-    await Hive.openBox(_currentUserKey);
-    await Hive.openBox(_loginCredentialsKey);
+    try {
+      await Hive.initFlutter();
+      Hive.registerAdapter(UserAdapter());
+      await Hive.openBox<User>(_boxName);
+      await Hive.openBox(_currentUserKey);
+      await Hive.openBox(_loginCredentialsKey);
+    } catch (e) {
+      print('Error inicializando Hive en UserService: $e');
+      // Reintentar después de un delay más largo
+      await Future.delayed(const Duration(milliseconds: 500));
+      try {
+        await Hive.initFlutter();
+        Hive.registerAdapter(UserAdapter());
+        await Hive.openBox<User>(_boxName);
+        await Hive.openBox(_currentUserKey);
+        await Hive.openBox(_loginCredentialsKey);
+      } catch (e2) {
+        print('Error en segundo intento de inicialización de Hive: $e2');
+        // Lanzar el error para que la app sepa que Hive no está disponible
+        rethrow;
+      }
+    }
   }
 
   // Guardar usuario

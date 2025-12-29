@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'screens/welcome_screen.dart';
 import 'services/user_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  await UserService.init();
+  // Esperar un momento para que los plugins nativos estén completamente listos
+  // Esto previene el crash en path_provider_foundation
+  await Future.delayed(const Duration(milliseconds: 100));
+  
+  try {
+    await UserService.init();
+  } catch (e) {
+    print('Error inicializando UserService: $e');
+    // Continuar de todas formas, la app puede funcionar sin Hive inicializado
+    // Los servicios que usen Hive manejarán el error internamente
+  }
+  
   runApp(const MyApp());
 }
 

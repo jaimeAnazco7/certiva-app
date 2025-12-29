@@ -117,3 +117,5 @@ Después de subir, en TestFlight verás:
 
 **¿Tienes acceso a una Mac para usar Transporter?** 🚀
 
+
+

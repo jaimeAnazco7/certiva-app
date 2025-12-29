@@ -119,3 +119,5 @@ Después de convertir, verifica:
 
 **Recomendación: Usa Photopea.com (Opción 1) - Es la más fácil y rápida** 🚀
 
+
+
