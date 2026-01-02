@@ -104,3 +104,5 @@ Busca estas secciones en la página de detalles.
 
 **Haz clic en uno de los crashes y comparte conmigo lo que ves, especialmente el Stack Trace.** 🔍
 
+
+

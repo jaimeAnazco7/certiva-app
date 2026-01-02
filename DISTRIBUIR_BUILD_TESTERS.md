@@ -144,3 +144,5 @@ Una vez distribuido, los testers recibirán:
 
 **¿Puedes seguir estos pasos y decirme si ves el build disponible en el grupo?** 🚀
 
+
+

@@ -135,3 +135,5 @@ Para verificar si un PNG tiene transparencia:
 
 
 
+
+

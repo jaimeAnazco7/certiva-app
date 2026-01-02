@@ -131,3 +131,5 @@ static Future<void> init() async {
 3. Subir nuevo build
 4. Verificar que el crash no ocurra
 
+
+

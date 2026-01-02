@@ -71,3 +71,5 @@ El build puede tener errores que impiden su distribución.
 **¿Puedes verificar en "Compilaciones" → "iOS" si el build está listo?** 🔍
 
 
+
+

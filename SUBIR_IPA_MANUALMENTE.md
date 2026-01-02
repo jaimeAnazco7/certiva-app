@@ -119,3 +119,5 @@ Después de subir, en TestFlight verás:
 
 
 
+
+

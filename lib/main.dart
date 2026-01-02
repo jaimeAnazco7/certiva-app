@@ -1,73 +1,129 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'dart:ui';
 import 'screens/welcome_screen.dart';
 import 'services/user_service.dart';
 
 void main() async {
   final startTime = DateTime.now();
-  print('🚀 [MAIN] Inicio de la aplicación - ${startTime.toIso8601String()}');
+  debugPrint('🚀 [MAIN] Inicio de la aplicación - ${startTime.toIso8601String()}');
   
-  print('🔧 [MAIN] Llamando WidgetsFlutterBinding.ensureInitialized()...');
+  debugPrint('🔧 [MAIN] Llamando WidgetsFlutterBinding.ensureInitialized()...');
   WidgetsFlutterBinding.ensureInitialized();
-  print('✅ [MAIN] WidgetsFlutterBinding.ensureInitialized() completado');
+  debugPrint('✅ [MAIN] WidgetsFlutterBinding.ensureInitialized() completado');
+  
+  // Inicializar Firebase
+  try {
+    debugPrint('🔥 [MAIN] Inicializando Firebase...');
+    await Firebase.initializeApp();
+    debugPrint('✅ [MAIN] Firebase inicializado correctamente');
+    
+    // Configurar Crashlytics
+    FlutterError.onError = (errorDetails) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    };
+    
+    // Pasar errores no capturados a Crashlytics
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+    
+    FirebaseCrashlytics.instance.log('🚀 [MAIN] App iniciada - Firebase Crashlytics configurado');
+    debugPrint('✅ [MAIN] Crashlytics configurado');
+  } catch (e, stackTrace) {
+    debugPrint('❌ [MAIN] Error inicializando Firebase: $e');
+    // Continuar sin Firebase si falla
+  }
   
   // Inicializar la app primero, luego Hive en segundo plano
   // Esto previene el crash en path_provider_foundation
-  print('📱 [MAIN] Llamando runApp()...');
+  debugPrint('📱 [MAIN] Llamando runApp()...');
+  FirebaseCrashlytics.instance.log('📱 [MAIN] Llamando runApp()');
   runApp(const MyApp());
-  print('✅ [MAIN] runApp() completado - App iniciada');
+  debugPrint('✅ [MAIN] runApp() completado - App iniciada');
   
   // Inicializar Hive después de que la app esté corriendo
   // Usar un delay más largo para asegurar que los plugins nativos estén listos
-  print('🔄 [MAIN] Iniciando inicialización de Hive en segundo plano...');
+  debugPrint('🔄 [MAIN] Iniciando inicialización de Hive en segundo plano...');
+  FirebaseCrashlytics.instance.log('🔄 [MAIN] Iniciando inicialización de Hive en segundo plano');
   _initializeHiveInBackground();
-  print('✅ [MAIN] Función _initializeHiveInBackground() llamada (no esperada)');
+  debugPrint('✅ [MAIN] Función _initializeHiveInBackground() llamada (no esperada)');
 }
 
 Future<void> _initializeHiveInBackground() async {
   final initStartTime = DateTime.now();
-  print('⏳ [HIVE_BG] Iniciando inicialización diferida de Hive - ${initStartTime.toIso8601String()}');
+  final logMessage = '⏳ [HIVE_BG] Iniciando inicialización diferida de Hive - ${initStartTime.toIso8601String()}';
+  FirebaseCrashlytics.instance.log(logMessage);
+  debugPrint(logMessage);
   
   // Esperar a que la app esté completamente inicializada
-  print('⏳ [HIVE_BG] Esperando 1000ms para que los plugins nativos estén listos...');
+  FirebaseCrashlytics.instance.log('⏳ [HIVE_BG] Esperando 1000ms para que los plugins nativos estén listos...');
+  debugPrint('⏳ [HIVE_BG] Esperando 1000ms para que los plugins nativos estén listos...');
   await Future.delayed(const Duration(milliseconds: 1000));
   final afterDelay = DateTime.now();
   final delayDuration = afterDelay.difference(initStartTime);
-  print('✅ [HIVE_BG] Delay completado después de ${delayDuration.inMilliseconds}ms');
+  final delayLog = '✅ [HIVE_BG] Delay completado después de ${delayDuration.inMilliseconds}ms';
+  FirebaseCrashlytics.instance.log(delayLog);
+  debugPrint(delayLog);
   
-  print('🔄 [HIVE_BG] Intentando inicializar UserService (primer intento)...');
+  FirebaseCrashlytics.instance.log('🔄 [HIVE_BG] Intentando inicializar UserService (primer intento)...');
+  debugPrint('🔄 [HIVE_BG] Intentando inicializar UserService (primer intento)...');
   try {
     final beforeInit = DateTime.now();
     await UserService.init();
     final afterInit = DateTime.now();
     final initDuration = afterInit.difference(beforeInit);
-    print('✅ [HIVE_BG] Hive inicializado correctamente en ${initDuration.inMilliseconds}ms');
-    print('✅ [HIVE_BG] Total tiempo desde inicio: ${afterInit.difference(initStartTime).inMilliseconds}ms');
+    final successLog = '✅ [HIVE_BG] Hive inicializado correctamente en ${initDuration.inMilliseconds}ms';
+    FirebaseCrashlytics.instance.log(successLog);
+    debugPrint(successLog);
+    final totalTimeLog = '✅ [HIVE_BG] Total tiempo desde inicio: ${afterInit.difference(initStartTime).inMilliseconds}ms';
+    FirebaseCrashlytics.instance.log(totalTimeLog);
+    debugPrint(totalTimeLog);
   } catch (e, stackTrace) {
     final errorTime = DateTime.now();
-    print('❌ [HIVE_BG] Error inicializando UserService (primer intento) - ${errorTime.toIso8601String()}');
-    print('❌ [HIVE_BG] Error: $e');
-    print('❌ [HIVE_BG] Stack trace: $stackTrace');
+    final errorLog = '❌ [HIVE_BG] Error inicializando UserService (primer intento) - ${errorTime.toIso8601String()}';
+    FirebaseCrashlytics.instance.log(errorLog);
+    debugPrint(errorLog);
+    FirebaseCrashlytics.instance.log('❌ [HIVE_BG] Error: $e');
+    debugPrint('❌ [HIVE_BG] Error: $e');
+    FirebaseCrashlytics.instance.recordError(e, stackTrace, fatal: false);
+    debugPrint('❌ [HIVE_BG] Stack trace: $stackTrace');
     
     // Reintentar después de otro delay
-    print('⏳ [HIVE_BG] Esperando 2000ms antes del segundo intento...');
+    FirebaseCrashlytics.instance.log('⏳ [HIVE_BG] Esperando 2000ms antes del segundo intento...');
+    debugPrint('⏳ [HIVE_BG] Esperando 2000ms antes del segundo intento...');
     await Future.delayed(const Duration(milliseconds: 2000));
     final afterSecondDelay = DateTime.now();
-    print('✅ [HIVE_BG] Segundo delay completado después de ${afterSecondDelay.difference(errorTime).inMilliseconds}ms');
+    final secondDelayLog = '✅ [HIVE_BG] Segundo delay completado después de ${afterSecondDelay.difference(errorTime).inMilliseconds}ms';
+    FirebaseCrashlytics.instance.log(secondDelayLog);
+    debugPrint(secondDelayLog);
     
-    print('🔄 [HIVE_BG] Intentando inicializar UserService (segundo intento)...');
+    FirebaseCrashlytics.instance.log('🔄 [HIVE_BG] Intentando inicializar UserService (segundo intento)...');
+    debugPrint('🔄 [HIVE_BG] Intentando inicializar UserService (segundo intento)...');
     try {
       final beforeSecondInit = DateTime.now();
       await UserService.init();
       final afterSecondInit = DateTime.now();
       final secondInitDuration = afterSecondInit.difference(beforeSecondInit);
-      print('✅ [HIVE_BG] Hive inicializado en segundo intento en ${secondInitDuration.inMilliseconds}ms');
-      print('✅ [HIVE_BG] Total tiempo desde inicio: ${afterSecondInit.difference(initStartTime).inMilliseconds}ms');
+      final secondSuccessLog = '✅ [HIVE_BG] Hive inicializado en segundo intento en ${secondInitDuration.inMilliseconds}ms';
+      FirebaseCrashlytics.instance.log(secondSuccessLog);
+      debugPrint(secondSuccessLog);
+      final secondTotalTimeLog = '✅ [HIVE_BG] Total tiempo desde inicio: ${afterSecondInit.difference(initStartTime).inMilliseconds}ms';
+      FirebaseCrashlytics.instance.log(secondTotalTimeLog);
+      debugPrint(secondTotalTimeLog);
     } catch (e2, stackTrace2) {
       final finalErrorTime = DateTime.now();
-      print('❌ [HIVE_BG] Error en segundo intento de inicialización - ${finalErrorTime.toIso8601String()}');
-      print('❌ [HIVE_BG] Error: $e2');
-      print('❌ [HIVE_BG] Stack trace: $stackTrace2');
-      print('⚠️ [HIVE_BG] La app continuará sin Hive inicializado');
+      final finalErrorLog = '❌ [HIVE_BG] Error en segundo intento de inicialización - ${finalErrorTime.toIso8601String()}';
+      FirebaseCrashlytics.instance.log(finalErrorLog);
+      debugPrint(finalErrorLog);
+      FirebaseCrashlytics.instance.log('❌ [HIVE_BG] Error: $e2');
+      debugPrint('❌ [HIVE_BG] Error: $e2');
+      FirebaseCrashlytics.instance.recordError(e2, stackTrace2, fatal: false);
+      debugPrint('❌ [HIVE_BG] Stack trace: $stackTrace2');
+      FirebaseCrashlytics.instance.log('⚠️ [HIVE_BG] La app continuará sin Hive inicializado');
+      debugPrint('⚠️ [HIVE_BG] La app continuará sin Hive inicializado');
       // La app puede continuar sin Hive, los servicios manejarán el error
     }
   }

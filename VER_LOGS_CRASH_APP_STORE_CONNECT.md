@@ -218,3 +218,5 @@ Cuando estés en App Store Connect:
 
 **Una vez que veas los logs, podrás identificar exactamente qué está causando el crash.** 🔍
 
+
+
