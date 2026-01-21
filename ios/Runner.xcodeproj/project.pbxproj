@@ -273,7 +273,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$FLUTTER_ROOT\" ]; then\n  if [ -f \"${SRCROOT}/Flutter/Generated.xcconfig\" ]; then\n    export FLUTTER_ROOT=$(grep \"^FLUTTER_ROOT=\" \"${SRCROOT}/Flutter/Generated.xcconfig\" | cut -d'=' -f2)\n  fi\nfi\n: ${FLUTTER_ROOT:=\"/Users/janazco/development/flutter\"}\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+			shellScript = "if [ -f \"${SRCROOT}/Flutter/Generated.xcconfig\" ]; then\n  while IFS= read -r line || [ -n \"$line\" ]; do\n    if [[ ! $line =~ ^// ]] && [[ $line == *\"=\"* ]]; then\n      clean_line=$(echo \"$line\" | tr -d '\\r')\n      export \"$clean_line\"\n    fi\n  done < \"${SRCROOT}/Flutter/Generated.xcconfig\"\nfi\n: ${FLUTTER_ROOT:=\"/Users/janazco/development/flutter\"}\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
 		};
 		4B4D03EA9BA946617FAA8846 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -310,7 +310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$FLUTTER_ROOT\" ]; then\n  if [ -f \"${SRCROOT}/Flutter/Generated.xcconfig\" ]; then\n    export FLUTTER_ROOT=$(grep \"^FLUTTER_ROOT=\" \"${SRCROOT}/Flutter/Generated.xcconfig\" | cut -d'=' -f2)\n  fi\nfi\n: ${FLUTTER_ROOT:=\"/Users/janazco/development/flutter\"}\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "if [ -f \"${SRCROOT}/Flutter/Generated.xcconfig\" ]; then\n  while IFS= read -r line || [ -n \"$line\" ]; do\n    if [[ ! $line =~ ^// ]] && [[ $line == *\"=\"* ]]; then\n      clean_line=$(echo \"$line\" | tr -d '\\r')\n      export \"$clean_line\"\n    fi\n  done < \"${SRCROOT}/Flutter/Generated.xcconfig\"\nfi\n: ${FLUTTER_ROOT:=\"/Users/janazco/development/flutter\"}\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
 		};
 		D8D5E65C395E158FB1A8388F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
