@@ -1,0 +1,44 @@
+# Podfile corregido y ultra-robusto para certiva-app
+
+# 1. Función para encontrar la ruta del SDK de Flutter
+def flutter_root
+  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
+  
+  unless File.exist?(generated_xcode_build_settings_path)
+    raise "#{generated_xcode_build_settings_path} no existe. Ejecuta 'flutter pub get' primero."
+  end
+
+  # Buscamos la línea de FLUTTER_ROOT de forma flexible
+  File.foreach(generated_xcode_build_settings_path) do |line|
+    # .strip elimina espacios y caracteres invisibles como \r
+    clean_line = line.strip
+    if clean_line.start_with?('FLUTTER_ROOT=')
+      return clean_line.split('=').last.strip
+    end
+  end
+  
+  raise "No se encontró FLUTTER_ROOT en #{generated_xcode_build_settings_path}. Borra el archivo y ejecuta 'flutter pub get'."
+end
+
+# 2. Cargamos el archivo Ruby helper del SDK de Flutter
+load File.join(flutter_root, 'packages', 'flutter_tools', 'bin', 'podhelper.rb')
+
+platform :ios, '13.0'
+
+target 'Runner' do
+  use_frameworks!
+  use_modular_headers!
+
+  # Instala los pods de los plugins de Flutter
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+    
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+    end
+  end
+end

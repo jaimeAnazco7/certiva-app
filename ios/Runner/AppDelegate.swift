@@ -7,10 +7,10 @@ import UIKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    // Retrasar el registro de plugins para evitar crash en path_provider
-    // Los plugins se registran después de que iOS esté completamente inicializado
-    // Aumentado a 2.0 segundos porque 0.5s no era suficiente (crash en compilación 5)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+    // SOLUCIÓN CRASH path_provider_foundation en iOS 18.7.1
+    // Retrasar el registro de plugins para evitar EXC_BAD_ACCESS (SIGSEGV)
+    // Delay reducido a 1.0s (Compromiso Gemini + Mac Virtual)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
       GeneratedPluginRegistrant.register(with: self)
     }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
