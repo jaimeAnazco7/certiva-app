@@ -273,7 +273,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Configuración manual completa para evitar errores de valores nulos\nexport FLUTTER_ROOT=\"/Users/janazco/development/flutter\"\nexport FLUTTER_APPLICATION_PATH=\"/Users/janazco/Documents/proyecto_prueba/certiva-app\"\nexport FLUTTER_TARGET=\"lib/main.dart\"\nexport FLUTTER_BUILD_DIR=\"build\"\nexport DART_OBFUSCATION=\"false\"\nexport TRACK_WIDGET_CREATION=\"true\"\nexport TREE_SHAKE_ICONS=\"false\"\nexport PACKAGE_CONFIG=\".dart_tool/package_config.json\"\n\n# Ejecutamos el empaquetado\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
+			shellScript = "if [ -z \"$FLUTTER_ROOT\" ]; then\n  if [ -f \"${SRCROOT}/Flutter/Generated.xcconfig\" ]; then\n    export FLUTTER_ROOT=$(grep \"^FLUTTER_ROOT=\" \"${SRCROOT}/Flutter/Generated.xcconfig\" | cut -d'=' -f2)\n  fi\nfi\n: ${FLUTTER_ROOT:=\"/Users/janazco/development/flutter\"}\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
 		};
 		4B4D03EA9BA946617FAA8846 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -310,7 +310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Configuración manual completa para evitar errores de valores nulos\nexport FLUTTER_ROOT=\"/Users/janazco/development/flutter\"\nexport FLUTTER_APPLICATION_PATH=\"/Users/janazco/Documents/proyecto_prueba/certiva-app\"\nexport FLUTTER_TARGET=\"lib/main.dart\"\nexport FLUTTER_BUILD_DIR=\"build\"\nexport DART_OBFUSCATION=\"false\"\nexport TRACK_WIDGET_CREATION=\"true\"\nexport TREE_SHAKE_ICONS=\"false\"\nexport PACKAGE_CONFIG=\".dart_tool/package_config.json\"\n\n# Ejecutamos el build\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
+			shellScript = "if [ -z \"$FLUTTER_ROOT\" ]; then\n  if [ -f \"${SRCROOT}/Flutter/Generated.xcconfig\" ]; then\n    export FLUTTER_ROOT=$(grep \"^FLUTTER_ROOT=\" \"${SRCROOT}/Flutter/Generated.xcconfig\" | cut -d'=' -f2)\n  fi\nfi\n: ${FLUTTER_ROOT:=\"/Users/janazco/development/flutter\"}\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
 		};
 		D8D5E65C395E158FB1A8388F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
